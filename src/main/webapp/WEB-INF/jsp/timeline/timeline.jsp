@@ -99,6 +99,13 @@
 		
 		// 사용자가 이미지를 선택하는 순간 유효성 확인 및 업로드 된 파일명 노출
 		$("#file").on('change', function(e) {
+			// 취소를 누를 때 비어있는 경우 처리
+			let file = e.target.files[0];
+			if (file == null) {
+				$("#file").val(""); // 파일 태그 파일 제거(보이지 않지만 업로드 될 수 있으므로 주의)
+				$("#fileName").text(""); // 보여지는 파일명 비우기
+				return;
+			}
 			//alert("이미지 선택");
 			let fileName = e.target.files[0].name; // winter-8425500_640.jpg
 			console.log(fileName);
