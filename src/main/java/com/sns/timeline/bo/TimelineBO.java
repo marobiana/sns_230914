@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sns.comment.bo.CommentBO;
+import com.sns.comment.domain.CommentView;
 import com.sns.post.bo.PostBO;
 import com.sns.post.entity.PostEntity;
 import com.sns.timeline.domain.CardView;
@@ -20,6 +22,9 @@ public class TimelineBO {
 	
 	@Autowired
 	private UserBO userBO;
+	
+	@Autowired
+	private CommentBO commentBO;
 
 	// input:X        output: List<CardView>
 	public List<CardView> generateCardViewList() {
@@ -42,6 +47,8 @@ public class TimelineBO {
 			cardView.setUser(user);
 			
 			// 댓글들
+			List<CommentView> commentList = commentBO.generateCommentViewListByPostId(post.getId());
+			cardView.setCommentList(commentList);
 			
 			// 좋아요 개수
 			
