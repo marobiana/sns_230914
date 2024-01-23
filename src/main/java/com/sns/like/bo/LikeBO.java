@@ -10,7 +10,7 @@ public class LikeBO {
 	
 	@Autowired
 	private LikeMapper likeMapper;
-
+	
 	// input:postId, userId     output: X
 	public void likeToggle(int postId, int userId) {
 		if (likeMapper.selectLikeCountByPostIdUserId(postId, userId) > 0) {
@@ -20,5 +20,13 @@ public class LikeBO {
 			// 없으면 추가
 			likeMapper.insertLike(postId, userId);
 		}
+	}
+	
+	public int getLikeCountByPostId(int postId) {
+		return likeMapper.selectLikeCountByPostId(postId);
+	}
+	
+	public int getLikeCountByPostIdUserId(int postId, int userId) {
+		return likeMapper.selectLikeCountByPostIdUserId(postId, userId);
 	}
 }
