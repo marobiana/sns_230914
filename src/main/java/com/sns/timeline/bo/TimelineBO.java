@@ -52,6 +52,8 @@ public class TimelineBO {
 			
 			// 좋아요 개수
 			
+			// 로그인된 사람이 좋아요를 했는지 여부
+			
 			// ★★★★★ 마지막에 cardView를 list에 넣는다.
 			cardViewList.add(cardView);
 		}
