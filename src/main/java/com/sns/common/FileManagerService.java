@@ -1,5 +1,6 @@
 package com.sns.common;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,6 +10,9 @@ import java.nio.file.Paths;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 public class FileManagerService {
 
@@ -43,5 +47,33 @@ public class FileManagerService {
 		// 파일업로드가 성공했으면 웹 이미지 url path를 리턴한다.(예언)
 		// /images/aaaa_1689839327304/boho-g887cb34df_640.jpg
 		return "/images/" + directoryName + file.getOriginalFilename();
+	}
+
+	// 파일 삭제 메소드
+	// input: imagePath
+	// output: void
+	public void deleteFile(String imagePath) { // imagePath: /images/aaaa_1689841033122/beach-2179624_960_720.jpg
+		// D:\\shinboram\\6_spring_project\\memo\\workspace\\images/aaaa_1689841033122/beach-2179624_960_720.jpg
+		// 주소에 겹치는 /images/ 를 제거한다.
+
+		Path path = Paths.get(FILE_UPLOAD_PATH + imagePath.replace("/images/", ""));
+		if (Files.exists(path)) { // 이미지가 존재하는가?
+			// 이미지 삭제
+			try {
+				Files.delete(path);
+			} catch (IOException e) {
+				log.info("###[FileManagerService 이미지 삭제 실패] imagePath:{}", imagePath);
+			}
+
+			// 디렉토리(폴더) 삭제
+			path = path.getParent();
+			if (Files.exists(path)) {
+				try {
+					Files.delete(path);
+				} catch (IOException e) {
+					log.info("###[FileManagerService 이미지 폴더 삭제 실패] imagePath:{}", imagePath);
+				}
+			}
+		}
 	}
 }

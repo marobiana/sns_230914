@@ -6,28 +6,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sns.comment.bo.CommentBO;
 import com.sns.common.FileManagerService;
+import com.sns.like.bo.LikeBO;
 import com.sns.post.entity.PostEntity;
 import com.sns.post.repository.PostRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class PostBO {
 
 	@Autowired
 	private PostRepository postRepository;
-	
+
 	@Autowired
 	private FileManagerService fileManagerService;
 	
-	// input: X   output: List<PostEntity>
+	@Autowired
+	private CommentBO commentBO;
+	
+	@Autowired
+	private LikeBO likeBO;
+
+	// input: X output: List<PostEntity>
 	public List<PostEntity> getPostList() {
 		return postRepository.findAllByOrderByIdDesc();
 	}
-	
-	// input: 파라미터들   output:PostEntity
-	public PostEntity addPost(int userId, String userLoginId, 
-			String content, MultipartFile file) {
-		
+
+	// input: 파라미터들 output:PostEntity
+	public PostEntity addPost(int userId, String userLoginId, String content, MultipartFile file) {
+
 		String imagePath = null;
 
 		// 이미지가 있으면 업로드 후 imagePath를 받아옴
@@ -35,27 +45,27 @@ public class PostBO {
 			imagePath = fileManagerService.saveFile(userLoginId, file);
 		}
 
-		return postRepository.save(PostEntity.builder()
-				.userId(userId)
-				.content(content)
-				.imagePath(imagePath)
-				.build());
+		return postRepository.save(PostEntity.builder().userId(userId).content(content).imagePath(imagePath).build());
 	}
-	
-	public void deletePostByPostId() {
+
+	public void deletePostByPostIdUserId(int postId, int userId) {
 		// 기존 글 가져오기
-		
-		// 글 삭제 
-		
+		PostEntity post = postRepository.findById(postId).orElse(null);
+		if (post == null) {
+			log.error("[delete post] postId:{}, userId:{}", postId, userId);
+			return;
+		}
+
+		// 글 삭제
+		postRepository.delete(post);
+
 		// 이미지 있으면 삭제
-		
+		fileManagerService.deleteFile(post.getImagePath());
+
 		// 댓글들 삭제
-		
+		commentBO.deleteCommentsByPostId(postId);
+
 		// 좋아요들 삭제
+		likeBO.deleteLikeByPostId(postId);
 	}
 }
-
-
-
-
-

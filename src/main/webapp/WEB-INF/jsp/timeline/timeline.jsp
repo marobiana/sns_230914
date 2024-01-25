@@ -319,7 +319,22 @@
 			let postId = $("#modal").data("post-id");
 			//alert(postId);
 			
-			
+			// 글 삭제
+			$.ajax({
+				type:"delete"
+				, url:"/post/delete"
+				, data: {"postId":postId}
+				, success: function(data) {
+					if (data.code == 200) {
+						location.reload(true);
+					} else {
+						alert(data.error_message);
+					}
+				}
+				, error: function(e) {
+					alert("삭제하는데 실패했습니다. 관리자에게 문의해주세요.");
+				}
+			});
 		});
 	});
 </script>
