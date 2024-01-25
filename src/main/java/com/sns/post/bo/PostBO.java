@@ -41,4 +41,21 @@ public class PostBO {
 				.imagePath(imagePath)
 				.build());
 	}
+	
+	public void deletePostByPostId() {
+		// 기존 글 가져오기
+		
+		// 글 삭제 
+		
+		// 이미지 있으면 삭제
+		
+		// 댓글들 삭제
+		
+		// 좋아요들 삭제
+	}
 }
+
+
+
+
+
