@@ -24,7 +24,6 @@ public class TimelineController {
 		List<CardView> cardViewList = timelineBO.generateCardViewList(userId);
 		
 		model.addAttribute("cardViewList", cardViewList);
-		model.addAttribute("viewName", "timeline/timeline");
-		return "template/layout";
+		return "timeline/timeline";
 	}
 }

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<header th:fragment="headerFragment">
+	<div class="h-100 header bg-info d-flex justify-content-between align-items-center">
+		<!-- logo -->
+		<div class="logo d-flex align-items-center">
+			<h1 class="text-white ml-3">Marondalgram</h1>
+		</div>
+		
+		<!-- 로그인 정보 -->
+		<div th:if="${session.userId != null}">
+			<span class="text-white" th:text="${session.userName} + '님 안녕하세요.'"></span>
+			<a href="/user/sign-out" class="ml-2 text-white font-weight-bold">로그아웃</a>
+		</div>
+		<div th:unless="${session.userId}">
+			<a href="/user/sign-in-view" class="ml-2 text-white font-weight-bold">로그인</a>
+		</div>
+	</div>
+</header>

@@ -63,6 +63,7 @@ public class FileManagerService {
 				Files.delete(path);
 			} catch (IOException e) {
 				log.info("###[FileManagerService 이미지 삭제 실패] imagePath:{}", imagePath);
+				return;
 			}
 
 			// 디렉토리(폴더) 삭제
